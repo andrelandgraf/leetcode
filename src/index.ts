@@ -13,10 +13,8 @@ const exercise = (problemDifficulty: number, solutionScore: number = 0): string 
     if (solve(problemDifficulty, solutionScore)) {
         return 'success!';
     }
-    for (let i = 0; i < catalysts.length; i += 1) {
-        return `${catalysts[i]} => ${exercise(problemDifficulty, solutionScore + catalystScores[i])}`;
-    }
-    return 'keep trying!';
+    const nextIndex = Math.floor(Math.random() * catalysts.length);
+    return `${catalysts[nextIndex]} => ${exercise(problemDifficulty, solutionScore + catalystScores[nextIndex])}`;
 };
 
 console.log(`And don't forget the formula of success: ${exercise(20, 0)}`);
