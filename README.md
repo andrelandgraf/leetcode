@@ -7,7 +7,7 @@
 
 Hello World! 👋
 
-I just finished my M.Sc. and now I am stepping up my leetcode game! 🚀
+I just finished my studies and now I am stepping up my leetcode game! 🚀
 
 run `npm run test` to trigger all exercise test cases.
 
