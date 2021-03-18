@@ -25,7 +25,7 @@ class MinHeap {
 
     removeMin() {
         const lastLeafVal = this.heap.pop();
-        if (this.heap.length <= 1 || !lastLeafVal) {
+        if (!this.heap.length || !lastLeafVal) {
             return lastLeafVal;
         }
         const minVal = this.heap[0];
