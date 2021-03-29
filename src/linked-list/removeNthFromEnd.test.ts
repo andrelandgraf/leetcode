@@ -1,56 +1,5 @@
-import ListNode from './LinkedList';
+import { arrayToLinkedList, linkedListToArray, strigifyNodeList } from './listUtils';
 import removeNthFromEnd from './removeNthFromEnd';
-
-/*
- * helper function to create a linked list recurively
- */
-const recursiveHelper = (current: ListNode, array: number[]) => {
-    current.val = array[0];
-    if (array.length > 1) {
-        current.next = new ListNode();
-        // avoid side effects
-        const clonedArray = [...array];
-        clonedArray.splice(0, 1);
-        recursiveHelper(current.next, clonedArray);
-    }
-};
-
-/*
- * creates a linked list based on an array input
- */
-const arrayToLinkedList = (array: number[]): ListNode => {
-    if (!array.length) {
-        throw Error('empty array not supported');
-    }
-    const head = new ListNode();
-    recursiveHelper(head, array);
-    return head;
-};
-
-/*
- * parses a linked list back to an array
- */
-const linkedListToArray = (current: ListNode | null, array: number[] = []): number[] => {
-    if (!current) {
-        return [];
-    }
-    array.push(current.val);
-    if (!current.next) {
-        return array;
-    }
-    return linkedListToArray(current.next, array);
-};
-
-const strigifyNodeList = (current: ListNode | null, str: string = ''): string => {
-    if (!current) {
-        return 'null';
-    }
-    str += `${current.val} => `;
-    if (!current.next) {
-        return str + 'null';
-    }
-    return strigifyNodeList(current.next, str);
-};
 
 describe('removeNthFromEnd', () => {
     /*
