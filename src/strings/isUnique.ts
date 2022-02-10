@@ -43,10 +43,7 @@ function isUniqueSortedString(str: string): boolean {
 }
 
 /**
- * => Best space, worst time complexity
- * Uses no additional datastructures
- * Time complexity: O(N^2)
- * Space complexity: O(1)
+ * Helper function for isUniqueBruteForce
  */
 function isCharUnique(charIndex: number, str: string) {
     // Time complexity of O(N)
@@ -58,6 +55,12 @@ function isCharUnique(charIndex: number, str: string) {
     return true;
 }
 
+/**
+ * => Best space, worst time complexity
+ * Uses no additional datastructures
+ * Time complexity: O(N^2)
+ * Space complexity: O(1)
+ */
 function isUniqueBruteForce(str: string): boolean {
     // Time complexity of O(N)
     for (let i = 0; i < str.length; i += 1) {
