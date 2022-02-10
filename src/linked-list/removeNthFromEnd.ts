@@ -1,4 +1,4 @@
-import ListNode from './LinkedList';
+import ListNode from './ListNode';
 
 function getNodeListLength(current: ListNode): number {
     if (!current.next) {

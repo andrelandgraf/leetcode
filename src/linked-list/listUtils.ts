@@ -1,4 +1,4 @@
-import ListNode from './LinkedList';
+import ListNode from './ListNode';
 
 /*
  * creates a linked list based on an array input
@@ -25,12 +25,9 @@ export const arrayToLinkedList = (array: number[]): ListNode => {
  */
 export const linkedListToArray = (current: ListNode | null, array: number[] = []): number[] => {
     if (!current) {
-        return [];
-    }
-    array.push(current.val);
-    if (!current.next) {
         return array;
     }
+    array.push(current.val);
     return linkedListToArray(current.next, array);
 };
 

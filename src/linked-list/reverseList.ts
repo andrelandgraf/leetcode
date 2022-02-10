@@ -1,4 +1,4 @@
-import ListNode from './LinkedList';
+import ListNode from './ListNode';
 
 function reverseList(head: ListNode | null): ListNode | null {
     if (!head) {
