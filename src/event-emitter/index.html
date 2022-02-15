@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Event Emitter</title>
+    </head>
+    <body>
+        <main>
+            <h1>Hey there!</h1>
+            <p>Check the web console 👀</p>
+        </main>
+        <script>
+            /**
+             * on => register a listener for an event (name)
+             * once => register a listener for an event (name) but remove after one triggered
+             * emit => emitting an event yourself
+             * off => removing the event listener
+             */
+            function EventEmitter() {
+                /**
+                 * { "pramp": [{ callback, once }] }
+                 */
+                this.listeners = {};
+
+                // private shared function
+                function register(listeners, eventName, callback, once) {
+                    if (!listeners[eventName]) {
+                        listeners[eventName] = [];
+                    }
+                    listeners[eventName].push({ callback, once });
+                }
+
+                this.on = function (eventName, callback) {
+                    register(this.listeners, eventName, callback, false);
+                };
+
+                this.once = function (eventName, callback) {
+                    register(this.listeners, eventName, callback, true);
+                };
+
+                this.off = function (eventName, callback) {
+                    if (!this.listeners[eventName]) {
+                        return;
+                    }
+                    // compare callback functions by reference
+                    this.listeners[eventName] = this.listeners[eventName].filter(
+                        (element) => element.callback != callback,
+                    );
+                };
+
+                this.emit = function (eventName, value) {
+                    if (!this.listeners[eventName]) {
+                        return;
+                    }
+                    this.listeners[eventName].forEach((listener) => {
+                        listener.callback(value);
+                        if (listener.once) {
+                            this.off(eventName, listener.callback);
+                        }
+                    });
+                };
+            }
+
+            // Add your implementation here, and initialize eventEmitter with an actual value;
+            var eventEmitter = new EventEmitter();
+
+            function responseToEvent(msg) {
+                console.log(msg);
+            }
+
+            eventEmitter.on('pramp', responseToEvent);
+            eventEmitter.once('pramp', function (msg) {
+                console.log(msg + ' just once!');
+            });
+            eventEmitter.emit('pramp', '1st');
+            eventEmitter.emit('pramp', '2nd');
+            eventEmitter.off('pramp', responseToEvent);
+            eventEmitter.emit('pramp', '3rd');
+            eventEmitter.emit('pramp', '1st');
+        </script>
+    </body>
+</html>
