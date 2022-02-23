@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <style>
+            :root {
+                --border-shadow--default: 1px solid black;
+                --border-shadow--error: 1px solid red;
+                --border-shadow: var(--border-shadow--default);
+            }
+            .form {
+                width: 100%;
+                max-width: 500px;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .labeled-input  {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            input {
+                width: 100%;
+                border: var(--border-shadow--default);
+            }
+            input:invalid {
+                border: var(--border-shadow);
+            }
+            input:focus:invalid {
+                border: var(--border-shadow--default);
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <form id="signup-form" class="form" method="get">
+                <h1>Sign up</h1>
+                <div class="labeled-input">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" autocomplete="name" required />
+                </div>
+                <div class="labeled-input">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" autocomplete="email" required />
+                </div>
+                <div class="labeled-input">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" autocomplete="new-password" required />
+                </div>
+                <div class="labeled-input">
+                    <label for="repeat-password">Repeat Password</label>
+                    <input
+                        type="password"
+                        id="repeat-password"
+                        name="repeatedPw"
+                        autocomplete="new-password"
+                        required
+                    />
+                </div>
+                <div>
+                    <button type="submit">Sign up!</button>
+                </div>
+                <p id="pw-message" tabindex="-1" style="visibility: hidden" aria-hidden="true">
+                    Your two passwords do not match. Please try again.
+                </p>
+            </form>
+        </main>
+    </body>
+    <script>
+        const root = document.documentElement;
+        const form = document.querySelector('#signup-form');
+        const pwMessage = document.querySelector('#pw-message');
+        if (!form) throw Error('sign-up form not found!');
+        if (!pwMessage) throw Error('pw-message paragraph not found!');
+        form.addEventListener('submit', (e) => {
+            const password = e.target.password.value;
+            const repeatedPw = e.target.repeatedPw.value;
+            if (password !== repeatedPw) {
+                root.style.setProperty('--border-shadow', 'var(--border-shadow--error)');
+                pwMessage.style.setProperty('visibility', 'visible');
+                pwMessage.setAttribute('aria-hidden', 'false');
+                if (pwMessage.focus) pwMessage.focus();
+                event.preventDefault();
+                return;
+            }
+            root.style.setProperty('--border-shadow', 'var(--border-shadow--default)');
+            pwMessage.style.setProperty('visibility', 'hidden');
+            pwMessage.setAttribute('aria-hidden', 'true');
+        });
+    </script>
+</html>
