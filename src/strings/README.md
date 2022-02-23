@@ -11,3 +11,9 @@ From: Cracking the Coding Interview - Gayle Laakmann McDowell
 From: Cracking the Coding Interview - Gayle Laakmann McDowell
 
 -   checkPermutation.ts implements exercise solution
+
+## Sentence Reverse
+
+From: pramp.com: https://www.pramp.com/challenge/VKdqbrq6B1S5XAyGAOn4
+
+-   sentenceReverse.ts implements exercise solution
