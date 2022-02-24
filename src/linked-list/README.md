@@ -26,3 +26,9 @@ From: Cracking the Coding Interview - Gayle Laakmann McDowell
 
 -   LinkedList.ts implemented as a wrapper around ListNode.ts
 -   removeDuplicates.ts implements exercise solution
+
+## Reverse Nodes in Even Sublists
+
+From: Meta Careers Website
+
+-   reverseEvenSublists.ts implements the exercise solution
