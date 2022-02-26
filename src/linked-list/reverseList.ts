@@ -10,6 +10,7 @@ function reverseList(head: ListNode | null): ListNode | null {
     while (next !== null) {
         let nextNext = next.next;
         next.next = current;
+
         current = next;
         next = nextNext;
     }
