@@ -1,52 +1,47 @@
-function withForLoops(nums: number[], target: number): number[] {
-    if (!nums.length || nums.length === 1) {
-        return [];
-    }
-    for (let i = 0; i < nums.length; i += 1) {
-        for (let j = 0; j < nums.length; j += 1) {
-            if (i === j) {
-                continue;
-            }
-            if (nums[i] + nums[j] === target) {
-                return [i, j];
-            }
-        }
-    }
-    return [];
-}
-
-function recursionHelper(i: number, j: number, nums: number[], target: number): number[] {
-    if (i !== j && nums[i] + nums[j] === target) {
-        return [i, j];
-    }
-    if (i < nums.length) {
-        const result = recursionHelper(i + 1, j, nums, target);
-        if (result.length) {
-            return result;
-        }
-    }
-    if (j < nums.length) {
-        const result = recursionHelper(i, j + 1, nums, target);
-        if (result.length) {
-            return result;
-        }
-    }
-    return [];
-}
-
-function withRecursion(nums: number[], target: number): number[] {
-    if (!nums.length || nums.length === 1) {
-        return [];
-    }
-    return recursionHelper(0, 0, nums, target);
-}
-
+/**
+ * Return indexes of two values that equal target
+ * Brute force (two nested loops):
+ *  - Time complexity: O(N^2)
+ *  - Space complexity: O(1)
+ * Performant alternative:
+ *  - Time complexity: Sort O(NlogN) + Traverse O(N) + Traverse O(N) => O(NlogN)
+ *  - Space complexity: O(N) since we create a sorted copy
+ *
+ * @returns {Array} the tuple of indexes based on the unsorted input
+ */
 function twoSum(nums: number[], target: number): number[] {
-    const useRecursion = false;
-    if (useRecursion) {
-        return withRecursion(nums, target);
+    if (nums.length < 2) {
+        return [];
     }
-    return withForLoops(nums, target);
+    const sortedNums = [...nums].sort((a, b) => a - b); // copy required to remember old indices
+    let left = 0;
+    let right = sortedNums.length - 1;
+    while (left < right) {
+        const sum = sortedNums[left] + sortedNums[right];
+        if (sum === target) {
+            const res: Array<number> = [];
+            let addedLeft = false;
+            let addedRight = false;
+            for (let i = 0; i < nums.length; i += 1) {
+                if (!addedLeft && nums[i] === sortedNums[left]) {
+                    addedLeft = true;
+                    res.push(i);
+                } else if (!addedRight && nums[i] === sortedNums[right]) {
+                    addedRight = true;
+                    res.push(i);
+                }
+
+                if (addedLeft && addedRight) {
+                    return res;
+                }
+            }
+        } else if (sum < target) {
+            left += 1;
+        } else {
+            right -= 1;
+        }
+    }
+    return [];
 }
 
 export default twoSum;
