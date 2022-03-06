@@ -17,3 +17,9 @@ From: Cracking the Coding Interview - Gayle Laakmann McDowell
 From: pramp.com: https://www.pramp.com/challenge/VKdqbrq6B1S5XAyGAOn4
 
 -   sentenceReverse.ts implements exercise solution
+
+## String.prototype.repeat Polyfill
+
+From interview experience:
+
+-   repeat.ts implements exercise solution
