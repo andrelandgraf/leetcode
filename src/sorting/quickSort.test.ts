@@ -1,13 +1,13 @@
-import { mergeSort } from './mergeSort';
+import { quickSort } from './quickSort';
 
-describe('merge sort', () => {
+describe('quick sort', () => {
     /*
      * Input: [2,4,1,5,6,3]
      * Output: [1,2,3,4,5,6]
      */
     test('simple case', async () => {
         const input = [2, 4, 1, 5, 6, 3];
-        const output = mergeSort(input);
+        const output = quickSort(input);
         expect(output).toEqual([1, 2, 3, 4, 5, 6]);
     });
     /*
@@ -16,7 +16,7 @@ describe('merge sort', () => {
      */
     test('edge case already sorted array', async () => {
         const input = [1, 2, 3, 4, 5];
-        const output = mergeSort(input);
+        const output = quickSort(input);
         expect(output).toEqual([1, 2, 3, 4, 5]);
     });
     /*
@@ -25,7 +25,7 @@ describe('merge sort', () => {
      */
     test('edge case tuple array', async () => {
         const input = [2, 1];
-        const output = mergeSort(input);
+        const output = quickSort(input);
         expect(output).toEqual([1, 2]);
     });
     /*
@@ -34,7 +34,7 @@ describe('merge sort', () => {
      */
     test('edge case one element', async () => {
         const input = [1];
-        const output = mergeSort(input);
+        const output = quickSort(input);
         expect(output).toEqual([1]);
     });
     /*
@@ -43,7 +43,7 @@ describe('merge sort', () => {
      */
     test('complex array', async () => {
         const input = [5, 1, 4, 2, 8, 6, 7, 14, 11, 1232, 12, 0, 13, 16, 234, 15, 9, 29, 66, 39, 3, 10, 199];
-        const output = mergeSort(input);
+        const output = quickSort(input);
         expect(output).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 29, 39, 66, 199, 234, 1232]);
     });
     /*
@@ -52,7 +52,7 @@ describe('merge sort', () => {
      */
     test('edge case empty array', async () => {
         const input: number[] = [];
-        const output = mergeSort(input);
+        const output = quickSort(input);
         expect(output).toEqual([]);
     });
 });
