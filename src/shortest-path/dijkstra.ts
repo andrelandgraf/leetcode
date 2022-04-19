@@ -1,6 +1,6 @@
 import { Graph, Node } from './graph';
 
-type PathElement = { node: Node; distance: number };
+type PathElement = { node: Node; distance: number; prev: Node | null };
 
 class PrioQueue {
     elements: Array<PathElement>;
@@ -24,7 +24,7 @@ function dijkstra(startNode: Node, graph: Graph): Map<string, PathElement> {
     const map = new Map<string, PathElement>();
     const queue = new PrioQueue();
     for (const [nodeName, node] of graph.nodes.entries()) {
-        const element = { node, distance: nodeName === startNode.name ? 0 : Number.MAX_VALUE };
+        const element = { node, distance: nodeName === startNode.name ? 0 : Number.MAX_VALUE, prev: null };
         map.set(nodeName, element);
         queue.push(element);
     }
@@ -37,9 +37,21 @@ function dijkstra(startNode: Node, graph: Graph): Map<string, PathElement> {
             if (!neighbor) continue;
             if (distance + edge.weight < neighbor.distance) {
                 neighbor.distance = distance + edge.weight;
+                neighbor.prev = node;
             }
         }
     }
 }
 
-export { dijkstra };
+function shortestPath(from: Node, to: Node, graph: Graph): [number, Array<string>] {
+    const map = dijkstra(from, graph);
+    const path = [to.name];
+    let node = to;
+    while (node.name !== from.name) {
+        node = map.get(node.name)!.prev!;
+        path.unshift(node.name);
+    }
+    return [map.get(to.name)!.distance, path];
+}
+
+export { dijkstra, shortestPath };

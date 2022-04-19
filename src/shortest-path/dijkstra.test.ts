@@ -1,5 +1,5 @@
 import { Edge, Node, Graph } from './graph';
-import { dijkstra } from './dijkstra';
+import { dijkstra, shortestPath } from './dijkstra';
 
 describe('use dijkstra to calculate shortest paths', () => {
     /**
@@ -66,5 +66,48 @@ describe('use dijkstra to calculate shortest paths', () => {
         const map = dijkstra(nodeA, graph);
         expect(map.get('A')?.distance).toEqual(0);
         expect(map.get('B')?.distance).toEqual(1);
+    });
+    /**
+     * Input:
+     *   Start: A, Target: G
+     *   Graph: A -2-> B -2-> G
+     *            -1-> C -1-> D -1-> F
+     *                   -2-> E -2-> G -2-> H
+     * Output: A -> B -> G
+     */
+    test('nodes in shortest path', () => {
+        const graph = new Graph();
+        const nodeA = new Node('A');
+        const nodeB = new Node('B');
+        const nodeC = new Node('C');
+        const nodeD = new Node('D');
+        const nodeE = new Node('E');
+        const nodeF = new Node('F');
+        const nodeG = new Node('G');
+        const nodeH = new Node('H');
+
+        nodeA.edges.push(new Edge(2, nodeB));
+        nodeA.edges.push(new Edge(1, nodeC));
+
+        nodeB.edges.push(new Edge(2, nodeG));
+
+        nodeC.edges.push(new Edge(1, nodeD));
+        nodeC.edges.push(new Edge(2, nodeE));
+
+        nodeD.edges.push(new Edge(1, nodeF));
+        nodeE.edges.push(new Edge(2, nodeG));
+        nodeE.edges.push(new Edge(2, nodeH));
+
+        graph.addNode(nodeA);
+        graph.addNode(nodeB);
+        graph.addNode(nodeC);
+        graph.addNode(nodeD);
+        graph.addNode(nodeE);
+        graph.addNode(nodeF);
+        graph.addNode(nodeG);
+
+        const [costs, path] = shortestPath(nodeA, nodeG, graph);
+        expect(costs).toEqual(4);
+        expect(path).toEqual(['A', 'B', 'G']);
     });
 });
