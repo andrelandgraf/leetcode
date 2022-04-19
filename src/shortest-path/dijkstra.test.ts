@@ -1,5 +1,5 @@
 import { Edge, Node, Graph } from './graph';
-import { dijkstra, shortestPath } from './dijkstra';
+import { dijkstra, shortestPathDijkstra } from './dijkstra';
 
 describe('use dijkstra to calculate shortest paths', () => {
     /**
@@ -106,7 +106,7 @@ describe('use dijkstra to calculate shortest paths', () => {
         graph.addNode(nodeF);
         graph.addNode(nodeG);
 
-        const [costs, path] = shortestPath(nodeA, nodeG, graph);
+        const [costs, path] = shortestPathDijkstra(nodeA, nodeG);
         expect(costs).toEqual(4);
         expect(path).toEqual(['A', 'B', 'G']);
     });

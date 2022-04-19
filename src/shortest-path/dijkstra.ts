@@ -8,8 +8,12 @@ class PrioQueue {
         this.elements = [];
     }
     push(element: PathElement) {
-        this.elements.push(element);
-        this.elements.sort((a, b) => a.distance - b.distance);
+        if (this.elements.find((e) => e.node.name === element.node.name)) {
+            this.elements.sort((a, b) => a.distance - b.distance);
+        } else {
+            this.elements.push(element);
+            this.elements.sort((a, b) => a.distance - b.distance);
+        }
     }
     pop(): PathElement | undefined {
         return this.elements.shift();
@@ -43,15 +47,67 @@ function dijkstra(startNode: Node, graph: Graph): Map<string, PathElement> {
     }
 }
 
-function shortestPath(from: Node, to: Node, graph: Graph): [number, Array<string>] {
-    const map = dijkstra(from, graph);
+function drawPath(from: Node, to: Node, map: Map<string, PathElement>): Array<string> {
     const path = [to.name];
     let node = to;
     while (node.name !== from.name) {
-        node = map.get(node.name)!.prev!;
-        path.unshift(node.name);
+        const element = map.get(node.name);
+        if (!element) return [];
+        const prevNode = element.prev;
+        if (!prevNode) return [];
+        path.unshift(prevNode.name);
+        node = prevNode;
     }
-    return [map.get(to.name)!.distance, path];
+    return path;
 }
 
-export { dijkstra, shortestPath };
+function returnResults(
+    startNode: Node,
+    endNode: Node,
+    map: Map<string, PathElement>,
+): [costs: number, path: Array<string>] {
+    const path = drawPath(startNode, endNode, map);
+    const costs = map.get(endNode.name)?.distance ?? Number.MAX_VALUE;
+    return [costs, path];
+}
+
+function shortestPathDijkstra(startNode: Node, endNode: Node): [costs: number, path: Array<string>] {
+    // A record of all found nodes and their distances to startNode
+    const map = new Map<string, PathElement>();
+    // The elements we have to visit
+    const queue = new PrioQueue();
+
+    // At fist, we only know startNode
+    const firstElement = { node: startNode, distance: 0, prev: null };
+    map.set(startNode.name, firstElement);
+    queue.push(firstElement);
+
+    while (true) {
+        // Get next element to visit with min distance in queue
+        const element = queue.pop();
+        if (!element) return returnResults(startNode, endNode, map);
+        const { node, distance } = element;
+        // For each edge / neighbor of node:
+        for (const edge of node.edges) {
+            const neighbor = map.get(edge.to.name);
+            if (!neighbor) {
+                // If we don't know the neighbor, we register it and add it to the queue
+                const newElement = { node: edge.to, distance: distance + edge.weight, prev: node };
+                map.set(edge.to.name, newElement);
+                queue.push(newElement);
+            } else if (distance + edge.weight < neighbor.distance) {
+                // If we found a shorter path to neighbor, we update it and add it to the queue
+                neighbor.distance = distance + edge.weight;
+                neighbor.prev = node;
+                queue.push(neighbor);
+            }
+
+            if (edge.to.name === endNode.name) {
+                // Since we are only interested in one shortest path, we can stop if we found the end node
+                return returnResults(startNode, endNode, map);
+            }
+        }
+    }
+}
+
+export { dijkstra, shortestPathDijkstra };
